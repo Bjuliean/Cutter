@@ -9,7 +9,6 @@ import (
 	"rapi/rapi/src/internal/http-server/handlers/url/remove"
 	"rapi/rapi/src/internal/http-server/handlers/url/save"
 	"rapi/rapi/src/internal/http-server/middleware/logger"
-	_ "rapi/rapi/src/internal/storage"
 	"rapi/rapi/src/internal/storage/sqlite"
 
 	"github.com/go-chi/chi/v5"

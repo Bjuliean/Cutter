@@ -11,10 +11,6 @@ type Storage struct {
 	db *sql.DB
 }
 
-func (s *Storage) AAA() { //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	fmt.Println(123)
-}
-
 func New(storagePath string) (*Storage, error) {
 	const ferr = "storage.sqlite.New"
 
