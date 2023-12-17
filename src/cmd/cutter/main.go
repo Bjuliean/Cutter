@@ -42,27 +42,31 @@ func main() {
 		os.Exit(1)
 	}
 
-	// err = storage.SaveURL("https://google.com", "google")
-	// if err != nil {
-	// 	log.Error(err.Error())
-	// }
+	err = storage.SaveURL("https://google.com", "google")
+	if err != nil {
+		log.Error(err.Error())
+	}
 
 	router := chi.NewRouter()
 
-	// router.Route("/url", func(r chi.Router){
-	// 	r.Use(middleware.BasicAuth("cutter", map[string]string{
-	// 		cfg.HTTPServer.User: cfg.HTTPServer.Password,
-	// 	}))
-	// })
 
 	router.Use(middleware.RequestID)
 	router.Use(logger.New(log))
 	router.Use(middleware.Recoverer) //panic defense
 	router.Use(middleware.URLFormat)
 
-	router.Post("/url", save.New(log, storage))
+	router.Route("/url", func(r chi.Router){
+		r.Use(middleware.BasicAuth("cutter", map[string]string{
+			cfg.HTTPServer.User: cfg.HTTPServer.Password,
+		}))
+		
+		r.Post("/", save.New(log, storage))
+		r.Delete("/{alias}", remove.New(log, storage))
+	})
+
+	//router.Post("/url", save.New(log, storage))
 	router.Get("/{alias}", redirect.New(log, storage))
-	router.Delete("/{alias}", remove.New(log, storage))
+	//router.Delete("/url/{alias}", remove.New(log, storage))
 
 	srv := &http.Server{
 		Addr: cfg.Address,
