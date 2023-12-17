@@ -40,7 +40,7 @@ Example of work.
 ![img](misc/4.png)
 ![img](misc/5.png)
 ![img](misc/6.png)
-![img](misc/&.png)
+![img](misc/7.png)
 
 Example of POST.
 
