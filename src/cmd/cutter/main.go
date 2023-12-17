@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"os"
 	"rapi/rapi/src/internal/config"
+	"rapi/rapi/src/internal/http-server/handlers/redirect"
+	"rapi/rapi/src/internal/http-server/handlers/url/remove"
 	"rapi/rapi/src/internal/http-server/handlers/url/save"
 	"rapi/rapi/src/internal/http-server/middleware/logger"
 	_ "rapi/rapi/src/internal/storage"
@@ -45,26 +47,22 @@ func main() {
 	// 	log.Error(err.Error())
 	// }
 
-	// res, err := storage.GetURL("google")
-	// if err != nil {
-	// 	log.Error("failed to init storage", err)
-	// 	os.Exit(1)
-	// }
-	// fmt.Printf("res: %s\n", res)
-
-	err = storage.DeleteURL("google")
-	if err != nil {
-		log.Error("failed to init storage", err)
-		os.Exit(1)
-	}
-
 	router := chi.NewRouter()
+
+	// router.Route("/url", func(r chi.Router){
+	// 	r.Use(middleware.BasicAuth("cutter", map[string]string{
+	// 		cfg.HTTPServer.User: cfg.HTTPServer.Password,
+	// 	}))
+	// })
+
 	router.Use(middleware.RequestID)
 	router.Use(logger.New(log))
 	router.Use(middleware.Recoverer) //panic defense
 	router.Use(middleware.URLFormat)
 
 	router.Post("/url", save.New(log, storage))
+	router.Get("/{alias}", redirect.New(log, storage))
+	router.Delete("/{alias}", remove.New(log, storage))
 
 	srv := &http.Server{
 		Addr: cfg.Address,
