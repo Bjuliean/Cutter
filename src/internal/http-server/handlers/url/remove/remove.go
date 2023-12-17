@@ -16,7 +16,7 @@ type URLDeleter interface {
 
 type Response struct {
 	resp.Response
-	Alias	string		`json:"alias,omitempty"`
+	Alias string `json:"alias,omitempty"`
 }
 
 func New(log *slog.Logger, urlDeleter URLDeleter) http.HandlerFunc {
@@ -45,7 +45,7 @@ func New(log *slog.Logger, urlDeleter URLDeleter) http.HandlerFunc {
 		log.Info("alias deleted")
 		render.JSON(w, r, Response{
 			Response: resp.OK(),
-			Alias: alias,
+			Alias:    alias,
 		})
 	}
 }

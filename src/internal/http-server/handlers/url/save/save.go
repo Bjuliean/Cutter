@@ -22,13 +22,13 @@ type URLSaver interface {
 }
 
 type Request struct {
-	URL		string		`json:"url" validate:"required,url"`
-	Alias	string		`json:"alias,omitempty"`
+	URL   string `json:"url" validate:"required,url"`
+	Alias string `json:"alias,omitempty"`
 }
 
 type Response struct {
 	resp.Response
-	Alias	string		`json:"alias,omitempty"`
+	Alias string `json:"alias,omitempty"`
 }
 
 func New(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
@@ -71,7 +71,7 @@ func New(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 		}
 		render.JSON(w, r, Response{
 			Response: resp.OK(),
-			Alias: alias,
+			Alias:    alias,
 		})
 	}
 }
